@@ -86,13 +86,24 @@ export default function PlaneBackground() {
   const { w, h } = size;
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: -1 }} aria-hidden="true">
       <svg
         width={w}
         height={h}
         style={{ position: 'absolute', top: 0, left: 0 }}
         xmlns="http://www.w3.org/2000/svg"
       >
+        {/* Plane silhouette definition — Material airplane, rotated to point right */}
+        <defs>
+          <g id="plane-shape">
+            <path
+              d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"
+              fill="#a09890"
+              transform="rotate(-90 12 12)"
+            />
+          </g>
+        </defs>
+
         {FLIGHTS.map((f, i) => {
           const d = [
             `M ${f.start[0] * w} ${f.start[1] * h}`,
@@ -101,7 +112,7 @@ export default function PlaneBackground() {
             `${f.end[0] * w} ${f.end[1] * h}`,
           ].join(' ');
 
-          const ps = f.planeScale;
+          const s = f.planeScale * 0.55;
 
           return (
             <g key={`${i}-${w}-${h}`} opacity={f.opacity}>
@@ -115,7 +126,7 @@ export default function PlaneBackground() {
                 strokeLinecap="round"
               />
 
-              {/* Plane icon gliding along the arc */}
+              {/* Plane silhouette gliding along the arc */}
               <g>
                 <animateMotion
                   dur={f.dur}
@@ -126,10 +137,7 @@ export default function PlaneBackground() {
                 >
                   <mpath href={`#fp-${i}`} />
                 </animateMotion>
-                <polygon
-                  points={`${7*ps},0 ${-3*ps},${-3.5*ps} ${-0.5*ps},0 ${-3*ps},${3.5*ps}`}
-                  fill="#a09890"
-                />
+                <use href="#plane-shape" transform={`scale(${s}) translate(-12, -12)`} />
               </g>
             </g>
           );

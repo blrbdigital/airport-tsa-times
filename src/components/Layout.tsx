@@ -39,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-5 sm:py-8">
+      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-5 sm:py-8">
         {children}
       </main>
 
