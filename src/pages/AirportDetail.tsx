@@ -15,6 +15,8 @@ export default function AirportDetail() {
   const { data: hourlyData } = useHourlyData(code?.toUpperCase() || '');
   const { reports: recentReports } = useLiveReports(code?.toUpperCase());
 
+  const twitterCount = recentReports.filter(r => r.sourceType === 'twitter').length;
+
   if (loading) {
     return (
       <div className="text-center py-16 sm:py-20">
@@ -50,7 +52,7 @@ export default function AirportDetail() {
         All Airports
       </Link>
 
-      {/* Header — stacks cleanly on mobile */}
+      {/* Header card */}
       <div className="bg-surface border border-border-light rounded-2xl p-5 sm:p-8 mb-6 sm:mb-8 shadow-sm">
         <div className="flex items-start justify-between gap-4 mb-5 sm:mb-0">
           <div>
@@ -66,11 +68,9 @@ export default function AirportDetail() {
             <p className="text-xs sm:text-sm text-ink-muted mt-0.5">{airport.city}, {airport.state}</p>
           </div>
 
-          {/* Wait badge — always visible top right */}
           <WaitTimeBadge minutes={summary.avgWait} size="lg" className="flex-shrink-0" />
         </div>
 
-        {/* CTA — full width on mobile */}
         <Link
           to={`/report?airport=${airport.code}`}
           className="block sm:inline-block w-full sm:w-auto text-center px-5 py-3 rounded-full bg-coral text-white font-semibold text-sm active:bg-coral-dark transition-colors shadow-sm mb-5 sm:mb-6"
@@ -78,7 +78,6 @@ export default function AirportDetail() {
           Report Wait Time
         </Link>
 
-        {/* Stats — 2x2 grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-5 border-t border-border-light">
           <StatBox label="Avg Wait" value={`${summary.avgWait}m`} color={color} />
           <StatBox label="Shortest" value={`${summary.minWait}m`} color="text-wait-green" />
@@ -92,25 +91,23 @@ export default function AirportDetail() {
         </div>
       </div>
 
-      {/* Content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-        <div className="lg:col-span-2 space-y-5 sm:space-y-6">
+      {/* Desktop: 2-column layout */}
+      <div className="hidden lg:grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
           <CheckpointList checkpoints={summary.checkpoints} />
-
           {hourlyData.length > 0 && (
-            <div className="bg-surface border border-border-light rounded-2xl p-4 sm:p-5 shadow-sm">
+            <div className="bg-surface border border-border-light rounded-2xl p-5 shadow-sm">
               <TrendChart data={hourlyData} />
             </div>
           )}
         </div>
 
         <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-20 space-y-5 sm:space-y-6">
+          <div className="sticky top-20 space-y-6">
             <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
               <LiveFeed reports={recentReports} maxItems={10} expandTweets />
             </div>
-
-            <div className="bg-surface border border-border-light rounded-2xl p-4 sm:p-5 shadow-sm">
+            <div className="bg-surface border border-border-light rounded-2xl p-5 shadow-sm">
               <h3 className="text-xs text-ink-faint mb-3 mono uppercase tracking-wider">Pro Tips</h3>
               <div className="space-y-2.5 text-xs text-ink-muted leading-relaxed">
                 <p>Early flights (5-6am) typically have the shortest lines.</p>
@@ -118,6 +115,45 @@ export default function AirportDetail() {
                 <p>Check back 2hr before your flight for fresh data.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile: stacked layout with live feed right after checkpoints */}
+      <div className="lg:hidden space-y-5">
+        <CheckpointList checkpoints={summary.checkpoints} />
+
+        {/* Live feed — prominent on mobile */}
+        <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
+          <LiveFeed reports={recentReports} maxItems={8} expandTweets />
+
+          {/* Source trust line */}
+          {twitterCount > 0 && (
+            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border-light">
+              <svg className="w-3 h-3 text-ink-faint flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <span className="text-[11px] text-ink-faint">
+                {twitterCount} report{twitterCount !== 1 ? 's' : ''} sourced from X
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Trend chart */}
+        {hourlyData.length > 0 && (
+          <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
+            <TrendChart data={hourlyData} />
+          </div>
+        )}
+
+        {/* Tips */}
+        <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
+          <h3 className="text-xs text-ink-faint mb-3 mono uppercase tracking-wider">Pro Tips</h3>
+          <div className="space-y-2.5 text-xs text-ink-muted leading-relaxed">
+            <p>Early flights (5-6am) typically have the shortest lines.</p>
+            <p>TSA PreCheck averages 5-10 min — worth the $78/5yr.</p>
+            <p>Check back 2hr before your flight for fresh data.</p>
           </div>
         </div>
       </div>
