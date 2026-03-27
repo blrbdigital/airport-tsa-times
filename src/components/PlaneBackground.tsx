@@ -86,7 +86,7 @@ export default function PlaneBackground() {
   const { w, h } = size;
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: -1 }} aria-hidden="true">
+    <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
       <svg
         width={w}
         height={h}
