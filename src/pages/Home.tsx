@@ -1,10 +1,10 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import AirportCard from '../components/AirportCard';
 import LiveFeed from '../components/LiveFeed';
 import { useAirportSummaries, useLiveReports } from '../hooks/useWaitTimes';
-import { searchAirports } from '../data/airports';
+import { searchAirports, findNearestAirport } from '../data/airports';
 import { getWaitLevel, getWaitColor } from '../lib/types';
 import type { AirportWaitSummary } from '../lib/types';
 
@@ -14,9 +14,38 @@ export default function Home() {
   const [sortMode, setSortMode] = useState<SortMode>('wait-desc');
   const [filterQuery, setFilterQuery] = useState('');
   const [showFeed, setShowFeed] = useState(false);
+  const [locating, setLocating] = useState(false);
+  const [nearestCode, setNearestCode] = useState<string | null>(null);
+  const [nearestDist, setNearestDist] = useState<number | null>(null);
+  const [geoError, setGeoError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const { summaries, loading } = useAirportSummaries();
   const { reports: liveReports } = useLiveReports();
+
+  const handleNearMe = useCallback(() => {
+    if (!navigator.geolocation) {
+      setGeoError('Geolocation not supported');
+      return;
+    }
+    setLocating(true);
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { airport, distance } = findNearestAirport(pos.coords.latitude, pos.coords.longitude);
+        setNearestCode(airport.code);
+        setNearestDist(Math.round(distance));
+        setLocating(false);
+        // Navigate after a brief flash so user sees the result
+        setTimeout(() => navigate(`/airport/${airport.code.toLowerCase()}`), 800);
+      },
+      () => {
+        setGeoError('Location access denied');
+        setLocating(false);
+      },
+      { enableHighAccuracy: false, timeout: 8000 }
+    );
+  }, [navigate]);
 
   const totalReports = summaries.reduce((sum, a) => sum + a.reportCount, 0);
   const twitterReportCount = liveReports.filter(r => r.sourceType === 'twitter').length;
@@ -64,6 +93,44 @@ export default function Home() {
 
         <div className="max-w-xl mx-auto mb-4 sm:mb-5">
           <SearchBar large />
+        </div>
+
+        {/* Near me button */}
+        <div className="flex justify-center mb-4 sm:mb-5">
+          <button
+            onClick={handleNearMe}
+            disabled={locating}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-border-light shadow-sm text-xs font-medium text-ink-muted active:bg-surface-hover transition-colors disabled:opacity-60"
+          >
+            {locating ? (
+              <>
+                <span className="w-3.5 h-3.5 border-2 border-coral/30 border-t-coral rounded-full animate-spin" />
+                <span>Finding nearest airport...</span>
+              </>
+            ) : nearestCode ? (
+              <>
+                <svg className="w-3.5 h-3.5 text-coral" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <span>
+                  <span className="mono font-bold text-coral">{nearestCode}</span>
+                  <span className="text-ink-faint ml-1.5">{nearestDist} mi away</span>
+                </span>
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <span>Near me</span>
+              </>
+            )}
+          </button>
+          {geoError && (
+            <span className="text-[11px] text-wait-red ml-2 self-center">{geoError}</span>
+          )}
         </div>
 
         {/* Stats */}

@@ -265,3 +265,24 @@ export function searchAirports(query: string): Airport[] {
     a.state.toLowerCase().includes(q)
   );
 }
+
+/** Haversine distance in miles between two lat/lng points */
+function haversine(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 3959; // Earth radius in miles
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/** Find nearest airport to a given lat/lng, returns airport + distance in miles */
+export function findNearestAirport(lat: number, lng: number): { airport: Airport; distance: number } {
+  let best = { airport: airports[0], distance: Infinity };
+  for (const a of airports) {
+    const d = haversine(lat, lng, a.lat, a.lng);
+    if (d < best.distance) best = { airport: a, distance: d };
+  }
+  return best;
+}

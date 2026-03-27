@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import PlaneBackground from './PlaneBackground';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -7,6 +8,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-cream pb-20 sm:pb-0">
+      <PlaneBackground />
+
       {/* Top nav — minimal on mobile */}
       <header className="sticky top-0 z-50 bg-cream/80 glass border-b border-border-light">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between">
