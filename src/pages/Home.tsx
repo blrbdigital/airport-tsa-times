@@ -19,6 +19,7 @@ export default function Home() {
   const { reports: liveReports } = useLiveReports();
 
   const totalReports = summaries.reduce((sum, a) => sum + a.reportCount, 0);
+  const twitterReportCount = liveReports.filter(r => r.sourceType === 'twitter').length;
 
   const filteredCodes = filterQuery
     ? new Set(searchAirports(filterQuery).map(a => a.code))
@@ -78,6 +79,22 @@ export default function Home() {
           <span className="hidden sm:inline text-border">|</span>
           <span className="hidden sm:inline">Updated in real-time</span>
         </div>
+
+        {/* X Analysis trust banner */}
+        {twitterReportCount > 0 && (
+          <div className="mt-4 sm:mt-5 max-w-md mx-auto">
+            <div className="flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl bg-surface border border-border-light/60 shadow-sm">
+              <svg className="w-3.5 h-3.5 text-ink-muted flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <span className="text-[11px] sm:text-xs text-ink-muted">
+                Analyzing real-time tweets for wait time data
+                <span className="text-ink-faint mx-1.5">&middot;</span>
+                <span className="mono font-medium text-ink">{twitterReportCount}</span> tweet{twitterReportCount !== 1 ? 's' : ''} tracked
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Mobile: Hot airports strip */}

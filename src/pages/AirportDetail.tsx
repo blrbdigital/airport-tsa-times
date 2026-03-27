@@ -107,7 +107,7 @@ export default function AirportDetail() {
         <div className="lg:col-span-1">
           <div className="lg:sticky lg:top-20 space-y-5 sm:space-y-6">
             <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
-              <LiveFeed reports={recentReports} maxItems={10} />
+              <LiveFeed reports={recentReports} maxItems={10} expandTweets />
             </div>
 
             <div className="bg-surface border border-border-light rounded-2xl p-4 sm:p-5 shadow-sm">
