@@ -23,22 +23,13 @@ export default function CheckpointList({ checkpoints }: CheckpointListProps) {
           const level = getWaitLevel(cp.avgWait);
           const color = getWaitColor(level);
 
-          const trendIcon = {
-            up: '\u2191',
-            down: '\u2193',
-            stable: '\u2192',
-          }[cp.trend];
-
-          const trendColor = {
-            up: 'text-wait-red',
-            down: 'text-wait-green',
-            stable: 'text-ink-faint',
-          }[cp.trend];
+          const trendIcon = { up: '\u2191', down: '\u2193', stable: '\u2192' }[cp.trend];
+          const trendColor = { up: 'text-wait-red', down: 'text-wait-green', stable: 'text-ink-faint' }[cp.trend];
 
           return (
             <div
               key={cp.id}
-              className="flex items-center gap-3 py-3.5 px-4 rounded-xl bg-surface border border-border-light shadow-sm animate-slide-up"
+              className="flex items-center gap-3 py-3.5 sm:py-3.5 px-4 rounded-xl bg-surface border border-border-light shadow-sm animate-slide-up"
               style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'backwards' }}
             >
               <div className="flex-1 min-w-0">
@@ -50,7 +41,7 @@ export default function CheckpointList({ checkpoints }: CheckpointListProps) {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-3 mt-1">
+                <div className="flex items-center gap-3 mt-0.5">
                   <span className="text-[11px] text-ink-muted">
                     {cp.reportCount} report{cp.reportCount !== 1 ? 's' : ''}
                   </span>
@@ -62,14 +53,10 @@ export default function CheckpointList({ checkpoints }: CheckpointListProps) {
                 </div>
               </div>
 
-              <span className={`text-sm ${trendColor} mono`}>
-                {trendIcon}
-              </span>
+              <span className={`text-sm ${trendColor} mono`}>{trendIcon}</span>
 
               <div className="text-right flex-shrink-0">
-                <span className={`mono text-xl font-bold ${color}`}>
-                  {cp.avgWait}
-                </span>
+                <span className={`mono text-xl font-bold ${color}`}>{cp.avgWait}</span>
                 <span className={`${color} opacity-60 text-xs mono ml-0.5`}>min</span>
               </div>
             </div>

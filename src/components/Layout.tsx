@@ -3,19 +3,21 @@ import { Link, useLocation } from 'react-router-dom';
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isReport = location.pathname === '/report';
 
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Nav */}
+    <div className="min-h-screen bg-cream pb-20 sm:pb-0">
+      {/* Top nav — minimal on mobile */}
       <header className="sticky top-0 z-50 bg-cream/80 glass border-b border-border-light">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
             <span className="mono text-[13px] font-bold tracking-tight text-ink">
               airport<span className="text-coral">tsa</span>times
             </span>
           </Link>
 
-          <div className="flex items-center gap-4">
+          {/* Desktop nav only */}
+          <div className="hidden sm:flex items-center gap-4">
             <Link
               to="/"
               className={`text-[13px] font-medium transition-colors ${
@@ -34,11 +36,41 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-5 sm:py-8">
         {children}
       </main>
 
-      <footer className="border-t border-border-light bg-cream">
+      {/* Mobile bottom tab bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface/95 glass border-t border-border-light sm:hidden safe-bottom">
+        <div className="flex items-center justify-around px-4 pt-2 pb-3">
+          <Link
+            to="/"
+            className={`flex flex-col items-center gap-0.5 px-4 py-1 rounded-xl transition-colors ${
+              isHome ? 'text-coral' : 'text-ink-muted'
+            }`}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={isHome ? 2.5 : 1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+            </svg>
+            <span className="text-[10px] font-medium">Airports</span>
+          </Link>
+
+          <Link
+            to="/report"
+            className={`flex flex-col items-center gap-0.5 px-4 py-1 rounded-xl transition-colors ${
+              isReport ? 'text-coral' : 'text-ink-muted'
+            }`}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={isReport ? 2.5 : 1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-[10px] font-medium">Report</span>
+          </Link>
+        </div>
+      </nav>
+
+      {/* Desktop footer only */}
+      <footer className="hidden sm:block border-t border-border-light bg-cream">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5 flex items-center justify-between">
           <p className="text-xs text-ink-muted">
             Crowdsourced TSA data from real travelers.

@@ -8,7 +8,7 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-export default function SearchBar({ large = false, placeholder = 'Search airports by name, code, or city...' }: SearchBarProps) {
+export default function SearchBar({ large = false, placeholder }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Airport[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -17,9 +17,13 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const defaultPlaceholder = large
+    ? 'Search by airport code, name, or city...'
+    : 'Search airports...';
+
   useEffect(() => {
     if (query.length >= 1) {
-      const matches = searchAirports(query).slice(0, 8);
+      const matches = searchAirports(query).slice(0, 6);
       setResults(matches);
       setIsOpen(matches.length > 0);
       setSelectedIndex(-1);
@@ -43,6 +47,7 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
   const handleSelect = (airport: Airport) => {
     setQuery('');
     setIsOpen(false);
+    inputRef.current?.blur();
     navigate(`/airport/${airport.code.toLowerCase()}`);
   };
 
@@ -70,19 +75,23 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
         <input
           ref={inputRef}
           type="text"
+          inputMode="search"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
           value={query}
           onChange={e => setQuery(e.target.value)}
           onFocus={() => query.length >= 1 && results.length > 0 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={placeholder || defaultPlaceholder}
           className={`w-full bg-surface border border-border rounded-xl text-ink placeholder-ink-faint focus:outline-none focus:border-coral/40 focus:ring-2 focus:ring-coral/10 transition-all shadow-sm ${
-            large ? 'pl-12 pr-4 py-3.5 text-base' : 'pl-10 pr-4 py-2.5 text-sm'
+            large ? 'pl-12 pr-10 py-3.5 sm:py-3.5 text-base' : 'pl-10 pr-4 py-2.5 text-sm'
           }`}
         />
         {query && (
           <button
             onClick={() => { setQuery(''); setIsOpen(false); }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink-muted transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint active:text-ink-muted transition-colors p-1"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -94,14 +103,14 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 w-full mt-2 bg-surface border border-border rounded-xl shadow-lg overflow-hidden animate-fade-in"
+          className="absolute z-50 w-full mt-1.5 bg-surface border border-border rounded-xl shadow-lg overflow-hidden animate-fade-in"
         >
           {results.map((airport, i) => (
             <button
               key={airport.id}
               onClick={() => handleSelect(airport)}
-              className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${
-                i === selectedIndex ? 'bg-cream-dark' : 'hover:bg-surface-hover'
+              className={`w-full text-left px-4 py-3.5 flex items-center gap-3 transition-colors tap-target ${
+                i === selectedIndex ? 'bg-cream-dark' : 'active:bg-surface-hover'
               } ${i < results.length - 1 ? 'border-b border-border-light' : ''}`}
             >
               <span className="mono text-sm font-bold text-coral w-10 flex-shrink-0">
