@@ -37,6 +37,7 @@ export function generateLiveReports(count: number = 20): WaitReport[] {
       waitMinutes: randomWait(baseWait, checkpoint.isPrecheck ? 10 : 25),
       reportedAt: randomMinutesAgo(180),
       terminal: checkpoint.terminal,
+      sourceType: 'user',
     });
   }
   return reports.sort((a, b) => new Date(b.reportedAt).getTime() - new Date(a.reportedAt).getTime());

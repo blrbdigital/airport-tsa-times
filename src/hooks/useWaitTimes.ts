@@ -81,6 +81,9 @@ export function useLiveReports(airportCode?: string) {
           checkpoint_id,
           wait_minutes,
           reported_at,
+          source_type,
+          source_text,
+          source_url,
           checkpoints!inner(name, terminal)
         `)
         .order('reported_at', { ascending: false })
@@ -101,6 +104,9 @@ export function useLiveReports(airportCode?: string) {
           waitMinutes: r.wait_minutes,
           reportedAt: r.reported_at,
           terminal: r.checkpoints?.terminal || '',
+          sourceType: r.source_type || 'user',
+          sourceText: r.source_text || undefined,
+          sourceUrl: r.source_url || undefined,
         }));
         setReports(mapped);
       }

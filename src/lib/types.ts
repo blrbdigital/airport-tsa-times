@@ -25,6 +25,9 @@ export interface WaitReport {
   waitMinutes: number;
   reportedAt: string;
   terminal: string;
+  sourceType: 'user' | 'twitter';
+  sourceText?: string;
+  sourceUrl?: string;
 }
 
 export interface AirportWaitSummary {

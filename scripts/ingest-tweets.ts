@@ -67,6 +67,8 @@ interface ExtractedReport {
   tweetText: string;
   tweetId: string;
   tweetDate: string;
+  tweetUrl: string;
+  username: string;
   sentiment: 'positive' | 'negative' | 'neutral';
 }
 
@@ -191,12 +193,16 @@ function processTweets(tweets: any[]): ExtractedReport[] {
     const waitTime = extractWaitTime(text);
 
     if (airport && waitTime) {
+      const tweetId = tweet.id_str || tweet.id?.toString() || '';
+      const username = tweet.user?.screen_name || tweet.author?.username || '';
       reports.push({
         airportCode: airport,
         waitMinutes: waitTime,
         tweetText: text.slice(0, 280),
-        tweetId: tweet.id_str || tweet.id?.toString() || '',
+        tweetId,
         tweetDate: tweet.created_at || new Date().toISOString(),
+        tweetUrl: username ? `https://x.com/${username}/status/${tweetId}` : `https://x.com/i/status/${tweetId}`,
+        username,
         sentiment: analyzeSentiment(text),
       });
     }
@@ -245,8 +251,11 @@ async function insertReports(reports: ExtractedReport[]): Promise<number> {
         airport_code: report.airportCode,
         checkpoint_id: checkpointId,
         wait_minutes: report.waitMinutes,
-        ip_hash: `tweet:${report.tweetId}`, // Use ip_hash for dedup
-        user_agent: `twitter:${report.sentiment}:${report.tweetText.slice(0, 100)}`,
+        ip_hash: `tweet:${report.tweetId}`,
+        user_agent: `twitter:${report.sentiment}`,
+        source_type: 'twitter',
+        source_text: report.tweetText,
+        source_url: report.tweetUrl,
       });
 
     if (error) {
