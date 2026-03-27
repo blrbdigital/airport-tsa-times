@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
 import { getWaitLevel, getWaitColor, formatTimeAgo } from '../lib/types';
 import type { CheckpointWait } from '../lib/types';
 
 interface CheckpointListProps {
   checkpoints: CheckpointWait[];
+  airportCode?: string;
 }
 
-export default function CheckpointList({ checkpoints }: CheckpointListProps) {
+export default function CheckpointList({ checkpoints, airportCode }: CheckpointListProps) {
   const sorted = [...checkpoints].sort((a, b) => {
     if (a.isPrecheck !== b.isPrecheck) return a.isPrecheck ? 1 : -1;
     return a.avgWait - b.avgWait;
@@ -15,7 +17,14 @@ export default function CheckpointList({ checkpoints }: CheckpointListProps) {
     <div className="space-y-2">
       <div className="flex items-center justify-between px-1">
         <h3 className="text-sm font-semibold text-ink">Checkpoints</h3>
-        <span className="text-[10px] text-ink-faint mono uppercase tracking-wider">Avg Wait</span>
+        {airportCode && (
+          <Link
+            to={`/report?airport=${airportCode}`}
+            className="text-[11px] text-coral font-semibold active:text-coral-dark transition-colors"
+          >
+            + Report Wait
+          </Link>
+        )}
       </div>
 
       <div className="space-y-2">

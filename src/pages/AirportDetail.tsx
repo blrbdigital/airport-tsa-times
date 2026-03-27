@@ -94,7 +94,7 @@ export default function AirportDetail() {
       {/* Desktop: 2-column layout */}
       <div className="hidden lg:grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <CheckpointList checkpoints={summary.checkpoints} />
+          <CheckpointList checkpoints={summary.checkpoints} airportCode={airport.code} />
           {hourlyData.length > 0 && (
             <div className="bg-surface border border-border-light rounded-2xl p-5 shadow-sm">
               <TrendChart data={hourlyData} />
@@ -121,7 +121,7 @@ export default function AirportDetail() {
 
       {/* Mobile: stacked layout with live feed right after checkpoints */}
       <div className="lg:hidden space-y-5">
-        <CheckpointList checkpoints={summary.checkpoints} />
+        <CheckpointList checkpoints={summary.checkpoints} airportCode={airport.code} />
 
         {/* Live feed — prominent on mobile */}
         <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
