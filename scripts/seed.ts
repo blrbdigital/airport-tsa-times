@@ -1,8 +1,14 @@
 // Run: npx tsx scripts/seed.ts
 import { createClient } from '@supabase/supabase-js';
+import 'dotenv/config';
 
-const SUPABASE_URL = 'https://axixhkgmsxuxpnbdbvzu.supabase.co';
-const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4aXhoa2dtc3h1eHBuYmRidnp1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDY0NzA2NCwiZXhwIjoyMDkwMjIzMDY0fQ.HurKGX7smuUGK3k7om-8GDVjtmnF-l1gXgO01izwOPY';
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+if (!SUPABASE_URL || !SERVICE_KEY) {
+  console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env');
+  process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
@@ -54,12 +60,11 @@ async function seed() {
   const reports: any[] = [];
   const now = new Date();
 
-  for (const airport of airports.slice(0, 30)) { // Top 30 airports get demo data
+  for (const airport of airports.slice(0, 30)) {
     for (const cp of airport.checkpoints) {
-      // 3-8 reports per checkpoint over last 4 hours
       const count = 3 + Math.floor(Math.random() * 6);
       for (let i = 0; i < count; i++) {
-        const minutesAgo = Math.floor(Math.random() * 240); // 0-4 hours
+        const minutesAgo = Math.floor(Math.random() * 240);
         const baseWait = cp.isPrecheck ? 7 : 20;
         const variance = cp.isPrecheck ? 8 : 20;
         const waitMinutes = Math.max(2, Math.round(baseWait + (Math.random() - 0.5) * variance));
@@ -75,7 +80,6 @@ async function seed() {
     }
   }
 
-  // Insert in batches
   const batchSize = 100;
   for (let i = 0; i < reports.length; i += batchSize) {
     const batch = reports.slice(i, i + batchSize);

@@ -8,9 +8,10 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import 'dotenv/config';
 
-const SUPABASE_URL = 'https://axixhkgmsxuxpnbdbvzu.supabase.co';
-const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4aXhoa2dtc3h1eHBuYmRidnp1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDY0NzA2NCwiZXhwIjoyMDkwMjIzMDY0fQ.HurKGX7smuUGK3k7om-8GDVjtmnF-l1gXgO01izwOPY';
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const SOCIALDATA_KEY = process.env.SOCIALDATA_API_KEY || '';
 
 if (!SOCIALDATA_KEY) {
