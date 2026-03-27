@@ -1,0 +1,12 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, vps]
+    steps:
+      - name: Deploy
+        run: sudo /usr/local/bin/deploy_airporttsatimes_blrbdigital_com

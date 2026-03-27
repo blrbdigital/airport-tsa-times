@@ -1,0 +1,7 @@
+{
+  "domain": "airporttsatimes.blrbdigital.com",
+  "type": "vite",
+  "port": 3036,
+  "container": "app_airporttsatimes_blrbdigital_com",
+  "deploy_script": "/usr/local/bin/deploy_airporttsatimes_blrbdigital_com"
+}
