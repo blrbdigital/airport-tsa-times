@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getAirport } from '../data/airports';
 import { useAirportSummaries, useLiveReports, useHourlyData } from '../hooks/useWaitTimes';
@@ -14,8 +15,20 @@ export default function AirportDetail() {
   const summary = summaries.find(s => s.code.toLowerCase() === code?.toLowerCase());
   const { data: hourlyData } = useHourlyData(code?.toUpperCase() || '');
   const { reports: recentReports } = useLiveReports(code?.toUpperCase());
+  const [filterCheckpoint, setFilterCheckpoint] = useState<string | null>(null);
+  const feedRef = useRef<HTMLDivElement>(null);
 
-  const twitterCount = recentReports.filter(r => r.sourceType === 'twitter').length;
+  const filteredReports = filterCheckpoint
+    ? recentReports.filter(r => r.checkpointName === filterCheckpoint)
+    : recentReports;
+
+  const twitterCount = filteredReports.filter(r => r.sourceType === 'twitter').length;
+
+  const handleCheckpointClick = (checkpointName: string) => {
+    setFilterCheckpoint(prev => prev === checkpointName ? null : checkpointName);
+    // Scroll to feed on mobile
+    setTimeout(() => feedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  };
 
   if (loading) {
     return (
@@ -94,7 +107,12 @@ export default function AirportDetail() {
       {/* Desktop: 2-column layout */}
       <div className="hidden lg:grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <CheckpointList checkpoints={summary.checkpoints} airportCode={airport.code} />
+          <CheckpointList
+            checkpoints={summary.checkpoints}
+            airportCode={airport.code}
+            onCheckpointClick={handleCheckpointClick}
+            activeCheckpoint={filterCheckpoint}
+          />
           {hourlyData.length > 0 && (
             <div className="bg-surface border border-border-light rounded-2xl p-5 shadow-sm">
               <TrendChart data={hourlyData} />
@@ -104,8 +122,19 @@ export default function AirportDetail() {
 
         <div className="lg:col-span-1">
           <div className="sticky top-20 space-y-6">
-            <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
-              <LiveFeed reports={recentReports} maxItems={10} expandTweets />
+            <div ref={feedRef} className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
+              {filterCheckpoint && (
+                <button
+                  onClick={() => setFilterCheckpoint(null)}
+                  className="flex items-center gap-1.5 text-[11px] text-coral font-medium mb-3 active:text-coral-dark"
+                >
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Showing {filterCheckpoint} — tap to clear
+                </button>
+              )}
+              <LiveFeed reports={filteredReports} maxItems={10} expandTweets />
             </div>
             <div className="bg-surface border border-border-light rounded-2xl p-5 shadow-sm">
               <h3 className="text-xs text-ink-faint mb-3 mono uppercase tracking-wider">Pro Tips</h3>
@@ -121,11 +150,27 @@ export default function AirportDetail() {
 
       {/* Mobile: stacked layout with live feed right after checkpoints */}
       <div className="lg:hidden space-y-5">
-        <CheckpointList checkpoints={summary.checkpoints} airportCode={airport.code} />
+        <CheckpointList
+          checkpoints={summary.checkpoints}
+          airportCode={airport.code}
+          onCheckpointClick={handleCheckpointClick}
+          activeCheckpoint={filterCheckpoint}
+        />
 
         {/* Live feed — prominent on mobile */}
-        <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
-          <LiveFeed reports={recentReports} maxItems={8} expandTweets />
+        <div ref={feedRef} className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
+          {filterCheckpoint && (
+            <button
+              onClick={() => setFilterCheckpoint(null)}
+              className="flex items-center gap-1.5 text-[11px] text-coral font-medium mb-3 active:text-coral-dark"
+            >
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Showing {filterCheckpoint} — tap to clear
+            </button>
+          )}
+          <LiveFeed reports={filteredReports} maxItems={8} expandTweets />
 
           {/* Source trust line */}
           {twitterCount > 0 && (

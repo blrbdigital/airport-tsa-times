@@ -5,9 +5,11 @@ import type { CheckpointWait } from '../lib/types';
 interface CheckpointListProps {
   checkpoints: CheckpointWait[];
   airportCode?: string;
+  onCheckpointClick?: (checkpointName: string) => void;
+  activeCheckpoint?: string | null;
 }
 
-export default function CheckpointList({ checkpoints, airportCode }: CheckpointListProps) {
+export default function CheckpointList({ checkpoints, airportCode, onCheckpointClick, activeCheckpoint }: CheckpointListProps) {
   const sorted = [...checkpoints].sort((a, b) => {
     if (a.isPrecheck !== b.isPrecheck) return a.isPrecheck ? 1 : -1;
     return a.avgWait - b.avgWait;
@@ -31,6 +33,8 @@ export default function CheckpointList({ checkpoints, airportCode }: CheckpointL
         {sorted.map((cp, i) => {
           const level = getWaitLevel(cp.avgWait);
           const color = getWaitColor(level);
+          const isActive = activeCheckpoint === cp.name;
+          const isClickable = !!onCheckpointClick;
 
           const trendIcon = { up: '\u2191', down: '\u2193', stable: '\u2192' }[cp.trend];
           const trendColor = { up: 'text-wait-red', down: 'text-wait-green', stable: 'text-ink-faint' }[cp.trend];
@@ -38,7 +42,12 @@ export default function CheckpointList({ checkpoints, airportCode }: CheckpointL
           return (
             <div
               key={cp.id}
-              className="flex items-center gap-3 py-3.5 sm:py-3.5 px-4 rounded-xl bg-surface border border-border-light shadow-sm animate-slide-up"
+              onClick={() => onCheckpointClick?.(cp.name)}
+              className={`flex items-center gap-3 py-3.5 sm:py-3.5 px-4 rounded-xl bg-surface border shadow-sm animate-slide-up transition-colors ${
+                isActive
+                  ? 'border-coral/40 ring-1 ring-coral/20'
+                  : 'border-border-light'
+              } ${isClickable ? 'cursor-pointer active:bg-surface-hover' : ''}`}
               style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'backwards' }}
             >
               <div className="flex-1 min-w-0">
@@ -51,8 +60,9 @@ export default function CheckpointList({ checkpoints, airportCode }: CheckpointL
                   )}
                 </div>
                 <div className="flex items-center gap-3 mt-0.5">
-                  <span className="text-[11px] text-ink-muted">
+                  <span className={`text-[11px] ${isClickable ? 'text-coral font-medium' : 'text-ink-muted'}`}>
                     {cp.reportCount} report{cp.reportCount !== 1 ? 's' : ''}
+                    {isClickable && ' →'}
                   </span>
                   {cp.lastReport && (
                     <span className="text-[11px] text-ink-faint">

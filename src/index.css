@@ -137,4 +137,86 @@ input[type="range"]::-webkit-slider-thumb:active {
   }
 }
 
-/* Plane animations are SVG-based now — see PlaneBackground.tsx */
+/* ── Flight arc animations ── */
+.flight {
+  position: absolute;
+  color: #b5afa7;
+  opacity: 0.18;
+}
+.flight-body {
+  display: flex;
+  align-items: center;
+}
+.flight-flip {
+  transform: scaleX(-1);
+}
+.flight-trail {
+  width: 90px;
+  height: 2px;
+  background: linear-gradient(to right, transparent 0%, currentColor 100%);
+  border-radius: 1px;
+  margin-right: 3px;
+}
+.flight-trail-short {
+  width: 60px;
+}
+@media (min-width: 640px) {
+  .flight-trail { width: 180px; }
+  .flight-trail-short { width: 100px; }
+}
+
+/* Flight 1 — left→right, upper, gentle S-curve */
+.flight-1 {
+  animation: arc-path-1 30s linear infinite;
+}
+@keyframes arc-path-1 {
+  0%   { left: -12%; top: 15%; transform: rotate(-5deg); }
+  15%  { left: 8%;   top: 9%;  transform: rotate(-12deg); }
+  35%  { left: 32%;  top: 20%; transform: rotate(14deg); }
+  55%  { left: 56%;  top: 11%; transform: rotate(-10deg); }
+  75%  { left: 78%;  top: 22%; transform: rotate(12deg); }
+  100% { left: 112%; top: 8%;  transform: rotate(-6deg); }
+}
+
+/* Flight 2 — right→left, middle area */
+.flight-2 {
+  animation: arc-path-2 40s linear infinite;
+  animation-delay: -15s;
+  opacity: 0.14;
+}
+@keyframes arc-path-2 {
+  0%   { left: 112%; top: 42%; transform: rotate(4deg); }
+  15%  { left: 90%;  top: 34%; transform: rotate(-8deg); }
+  35%  { left: 65%;  top: 48%; transform: rotate(10deg); }
+  55%  { left: 42%;  top: 36%; transform: rotate(-6deg); }
+  75%  { left: 20%;  top: 46%; transform: rotate(8deg); }
+  100% { left: -12%; top: 38%; transform: rotate(-4deg); }
+}
+
+/* Flight 3 — left→right, lower, faster */
+.flight-3 {
+  animation: arc-path-3 24s linear infinite;
+  animation-delay: -8s;
+  opacity: 0.16;
+}
+@keyframes arc-path-3 {
+  0%   { left: -12%; top: 68%; transform: rotate(6deg); }
+  20%  { left: 14%;  top: 58%; transform: rotate(-10deg); }
+  45%  { left: 45%;  top: 70%; transform: rotate(8deg); }
+  70%  { left: 72%;  top: 60%; transform: rotate(-12deg); }
+  100% { left: 112%; top: 72%; transform: rotate(5deg); }
+}
+
+/* Flight 4 — right→left, high, slow and distant */
+.flight-4 {
+  animation: arc-path-4 55s linear infinite;
+  animation-delay: -25s;
+  opacity: 0.1;
+}
+@keyframes arc-path-4 {
+  0%   { left: 112%; top: 10%; transform: rotate(2deg); }
+  25%  { left: 80%;  top: 6%;  transform: rotate(-5deg); }
+  50%  { left: 48%;  top: 14%; transform: rotate(6deg); }
+  75%  { left: 18%;  top: 8%;  transform: rotate(-4deg); }
+  100% { left: -12%; top: 12%; transform: rotate(3deg); }
+}
