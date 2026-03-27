@@ -1,7 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
-import { useMemo } from 'react';
 import { getAirport } from '../data/airports';
-import { generateAirportSummaries, generateHourlyData, generateLiveReports } from '../data/mockData';
+import { useAirportSummaries, useLiveReports, useHourlyData } from '../hooks/useWaitTimes';
 import { getWaitLevel, getWaitColor, formatTimeAgo } from '../lib/types';
 import WaitTimeBadge from '../components/WaitTimeBadge';
 import CheckpointList from '../components/CheckpointList';
@@ -11,13 +10,19 @@ import LiveFeed from '../components/LiveFeed';
 export default function AirportDetail() {
   const { code } = useParams<{ code: string }>();
   const airport = getAirport(code || '');
-  const summaries = useMemo(() => generateAirportSummaries(), []);
+  const { summaries, loading } = useAirportSummaries();
   const summary = summaries.find(s => s.code.toLowerCase() === code?.toLowerCase());
-  const hourlyData = useMemo(() => generateHourlyData(), []);
-  const recentReports = useMemo(
-    () => generateLiveReports(30).filter(r => r.airportCode.toLowerCase() === code?.toLowerCase()),
-    [code]
-  );
+  const { data: hourlyData } = useHourlyData(code?.toUpperCase() || '');
+  const { reports: recentReports } = useLiveReports(code?.toUpperCase());
+
+  if (loading) {
+    return (
+      <div className="text-center py-20">
+        <div className="inline-block w-6 h-6 border-2 border-amber/30 border-t-amber rounded-full animate-spin" />
+        <p className="text-sm text-slate-500 mt-3">Loading...</p>
+      </div>
+    );
+  }
 
   if (!airport || !summary) {
     return (
@@ -89,9 +94,11 @@ export default function AirportDetail() {
         {/* Left: Checkpoints + Trend */}
         <div className="lg:col-span-2 space-y-6">
           <CheckpointList checkpoints={summary.checkpoints} />
-          <div className="bg-terminal-card border border-terminal-border rounded-xl p-4">
-            <TrendChart data={hourlyData} />
-          </div>
+          {hourlyData.length > 0 && (
+            <div className="bg-terminal-card border border-terminal-border rounded-xl p-4">
+              <TrendChart data={hourlyData} />
+            </div>
+          )}
         </div>
 
         {/* Right: Recent reports */}

@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { airports, searchAirports } from '../data/airports';
 import { getWaitLevel, getWaitColor } from '../lib/types';
+import { submitReport } from '../hooks/useWaitTimes';
 import type { Airport, Checkpoint } from '../lib/types';
 
 type Step = 'airport' | 'checkpoint' | 'time' | 'success';
@@ -26,14 +27,21 @@ export default function Report() {
   const level = getWaitLevel(waitMinutes);
   const color = getWaitColor(level);
 
-  const handleSubmit = () => {
-    // In production: POST to Supabase
-    console.log('Report submitted:', {
-      airport: selectedAirport?.code,
-      checkpoint: selectedCheckpoint?.id,
-      waitMinutes,
-    });
-    setStep('success');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async () => {
+    if (!selectedAirport || !selectedCheckpoint) return;
+    setSubmitting(true);
+    setError('');
+    try {
+      await submitReport(selectedAirport.code, selectedCheckpoint.id, waitMinutes);
+      setStep('success');
+    } catch (e: any) {
+      setError(e?.message || 'Failed to submit. Try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (step === 'success') {
@@ -214,12 +222,18 @@ export default function Report() {
             ))}
           </div>
 
+          {/* Error */}
+          {error && (
+            <p className="text-xs text-wait-red text-center mb-3">{error}</p>
+          )}
+
           {/* Submit */}
           <button
             onClick={handleSubmit}
-            className="w-full py-3.5 rounded-xl bg-amber text-terminal-bg font-semibold text-sm hover:bg-amber/90 transition-colors board-text"
+            disabled={submitting}
+            className="w-full py-3.5 rounded-xl bg-amber text-terminal-bg font-semibold text-sm hover:bg-amber/90 transition-colors board-text disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit Report
+            {submitting ? 'Submitting...' : 'Submit Report'}
           </button>
         </div>
       )}

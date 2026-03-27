@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import SearchBar from '../components/SearchBar';
 import AirportCard from '../components/AirportCard';
 import LiveFeed from '../components/LiveFeed';
-import { generateAirportSummaries, generateLiveReports } from '../data/mockData';
+import { useAirportSummaries, useLiveReports } from '../hooks/useWaitTimes';
 import { searchAirports } from '../data/airports';
 import type { AirportWaitSummary } from '../lib/types';
 
@@ -12,9 +12,8 @@ export default function Home() {
   const [sortMode, setSortMode] = useState<SortMode>('wait-desc');
   const [filterQuery, setFilterQuery] = useState('');
 
-  // In production, these come from Supabase real-time
-  const summaries = useMemo(() => generateAirportSummaries(), []);
-  const liveReports = useMemo(() => generateLiveReports(15), []);
+  const { summaries, loading } = useAirportSummaries();
+  const { reports: liveReports } = useLiveReports();
 
   const totalReports = summaries.reduce((sum, a) => sum + a.reportCount, 0);
 
@@ -74,87 +73,94 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main grid + sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Airport grid */}
-        <div className="lg:col-span-2">
-          {/* Sort controls */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                placeholder="Filter..."
-                value={filterQuery}
-                onChange={e => setFilterQuery(e.target.value)}
-                className="bg-terminal-card border border-terminal-border rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber/30 w-32 sm:w-40"
-              />
-              <span className="text-xs text-slate-500 board-text">
-                {sorted.length} airport{sorted.length !== 1 ? 's' : ''}
-              </span>
+      {loading ? (
+        <div className="text-center py-20">
+          <div className="inline-block w-6 h-6 border-2 border-amber/30 border-t-amber rounded-full animate-spin" />
+          <p className="text-sm text-slate-500 mt-3">Loading airports...</p>
+        </div>
+      ) : (
+        /* Main grid + sidebar */
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Airport grid */}
+          <div className="lg:col-span-2">
+            {/* Sort controls */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Filter..."
+                  value={filterQuery}
+                  onChange={e => setFilterQuery(e.target.value)}
+                  className="bg-terminal-card border border-terminal-border rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber/30 w-32 sm:w-40"
+                />
+                <span className="text-xs text-slate-500 board-text">
+                  {sorted.length} airport{sorted.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                {[
+                  { key: 'wait-desc' as SortMode, label: 'Longest' },
+                  { key: 'wait-asc' as SortMode, label: 'Shortest' },
+                  { key: 'reports' as SortMode, label: 'Active' },
+                  { key: 'alpha' as SortMode, label: 'A-Z' },
+                ].map(opt => (
+                  <button
+                    key={opt.key}
+                    onClick={() => setSortMode(opt.key)}
+                    className={`px-2 py-1 rounded text-[11px] transition-colors ${
+                      sortMode === opt.key
+                        ? 'bg-terminal-card-hover text-slate-200 border border-terminal-border-light'
+                        : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="flex items-center gap-1">
-              {[
-                { key: 'wait-desc' as SortMode, label: 'Longest' },
-                { key: 'wait-asc' as SortMode, label: 'Shortest' },
-                { key: 'reports' as SortMode, label: 'Active' },
-                { key: 'alpha' as SortMode, label: 'A-Z' },
-              ].map(opt => (
-                <button
-                  key={opt.key}
-                  onClick={() => setSortMode(opt.key)}
-                  className={`px-2 py-1 rounded text-[11px] transition-colors ${
-                    sortMode === opt.key
-                      ? 'bg-terminal-card-hover text-slate-200 border border-terminal-border-light'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  {opt.label}
-                </button>
+            {/* Airport cards grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {sorted.map((airport, i) => (
+                <AirportCard key={airport.code} airport={airport} index={i} />
               ))}
             </div>
+
+            {sorted.length === 0 && (
+              <div className="text-center py-16">
+                <p className="text-slate-500 text-sm">No airports match your search.</p>
+              </div>
+            )}
           </div>
 
-          {/* Airport cards grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {sorted.map((airport, i) => (
-              <AirportCard key={airport.code} airport={airport} index={i} />
-            ))}
-          </div>
+          {/* Sidebar — live feed */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-20">
+              <LiveFeed reports={liveReports} />
 
-          {sorted.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-slate-500 text-sm">No airports match your search.</p>
-            </div>
-          )}
-        </div>
-
-        {/* Sidebar — live feed */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-20">
-            <LiveFeed reports={liveReports} />
-
-            {/* Quick stats */}
-            <div className="mt-6 p-4 rounded-xl bg-terminal-card border border-terminal-border">
-              <h3 className="text-xs text-slate-500 mb-3 uppercase tracking-wider">Right Now</h3>
-              <div className="space-y-3">
-                <QuickStat
-                  label="Longest wait"
-                  airport={sorted[0]}
-                />
-                <QuickStat
-                  label="Shortest wait"
-                  airport={[...sorted].sort((a, b) => a.avgWait - b.avgWait)[0]}
-                />
-                <QuickStat
-                  label="Most reports"
-                  airport={[...sorted].sort((a, b) => b.reportCount - a.reportCount)[0]}
-                />
+              {/* Quick stats */}
+              <div className="mt-6 p-4 rounded-xl bg-terminal-card border border-terminal-border">
+                <h3 className="text-xs text-slate-500 mb-3 uppercase tracking-wider">Right Now</h3>
+                <div className="space-y-3">
+                  <QuickStat
+                    label="Longest wait"
+                    airport={sorted[0]}
+                  />
+                  <QuickStat
+                    label="Shortest wait"
+                    airport={[...sorted].sort((a, b) => a.avgWait - b.avgWait)[0]}
+                  />
+                  <QuickStat
+                    label="Most reports"
+                    airport={[...sorted].sort((a, b) => b.reportCount - a.reportCount)[0]}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
