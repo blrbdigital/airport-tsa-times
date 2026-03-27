@@ -6,7 +6,6 @@ interface CheckpointListProps {
 }
 
 export default function CheckpointList({ checkpoints }: CheckpointListProps) {
-  // Sort: general lines first, then precheck
   const sorted = [...checkpoints].sort((a, b) => {
     if (a.isPrecheck !== b.isPrecheck) return a.isPrecheck ? 1 : -1;
     return a.avgWait - b.avgWait;
@@ -14,67 +13,64 @@ export default function CheckpointList({ checkpoints }: CheckpointListProps) {
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-slate-300">Checkpoints</h3>
-        <span className="text-[10px] text-slate-600 board-text">AVG WAIT</span>
+      <div className="flex items-center justify-between px-1">
+        <h3 className="text-sm font-semibold text-ink">Checkpoints</h3>
+        <span className="text-[10px] text-ink-faint mono uppercase tracking-wider">Avg Wait</span>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {sorted.map((cp, i) => {
           const level = getWaitLevel(cp.avgWait);
           const color = getWaitColor(level);
 
           const trendIcon = {
-            up: '↑',
-            down: '↓',
-            stable: '→',
+            up: '\u2191',
+            down: '\u2193',
+            stable: '\u2192',
           }[cp.trend];
 
           const trendColor = {
             up: 'text-wait-red',
             down: 'text-wait-green',
-            stable: 'text-slate-500',
+            stable: 'text-ink-faint',
           }[cp.trend];
 
           return (
             <div
               key={cp.id}
-              className="flex items-center gap-3 py-3 px-4 rounded-lg bg-terminal-card border border-terminal-border animate-slide-up"
+              className="flex items-center gap-3 py-3.5 px-4 rounded-xl bg-surface border border-border-light shadow-sm animate-slide-up"
               style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'backwards' }}
             >
-              {/* Checkpoint info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-200">{cp.name}</span>
+                  <span className="text-sm font-medium text-ink">{cp.name}</span>
                   {cp.isPrecheck && (
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 board-text">
-                      PRE✓
+                    <span className="px-1.5 py-0.5 text-[10px] rounded-md bg-sky-light text-sky mono font-medium">
+                      PRE{'\u2713'}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-ink-muted">
                     {cp.reportCount} report{cp.reportCount !== 1 ? 's' : ''}
                   </span>
                   {cp.lastReport && (
-                    <span className="text-[11px] text-slate-600">
+                    <span className="text-[11px] text-ink-faint">
                       {formatTimeAgo(cp.lastReport)}
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* Trend arrow */}
-              <span className={`text-sm ${trendColor} board-text`}>
+              <span className={`text-sm ${trendColor} mono`}>
                 {trendIcon}
               </span>
 
-              {/* Wait time */}
               <div className="text-right flex-shrink-0">
-                <span className={`board-text text-xl font-bold ${color}`}>
+                <span className={`mono text-xl font-bold ${color}`}>
                   {cp.avgWait}
                 </span>
-                <span className={`${color} opacity-60 text-xs board-text ml-0.5`}>min</span>
+                <span className={`${color} opacity-60 text-xs mono ml-0.5`}>min</span>
               </div>
             </div>
           );

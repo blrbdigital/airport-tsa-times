@@ -68,7 +68,7 @@ export function getWaitLevel(minutes: number): WaitLevel {
 export function getWaitColor(level: WaitLevel): string {
   switch (level) {
     case 'low': return 'text-wait-green';
-    case 'medium': return 'text-wait-yellow';
+    case 'medium': return 'text-wait-amber';
     case 'high': return 'text-wait-red';
   }
 }
@@ -76,7 +76,7 @@ export function getWaitColor(level: WaitLevel): string {
 export function getWaitBg(level: WaitLevel): string {
   switch (level) {
     case 'low': return 'bg-wait-green-bg border-wait-green/20';
-    case 'medium': return 'bg-wait-yellow-bg border-wait-yellow/20';
+    case 'medium': return 'bg-wait-amber-bg border-wait-amber/20';
     case 'high': return 'bg-wait-red-bg border-wait-red/20';
   }
 }

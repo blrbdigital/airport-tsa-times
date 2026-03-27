@@ -47,23 +47,23 @@ export default function Report() {
   if (step === 'success') {
     return (
       <div className="max-w-md mx-auto text-center py-16 animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-wait-green/20 border-2 border-wait-green flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-wait-green checkmark-animate" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+        <div className="w-16 h-16 rounded-full bg-wait-green-bg border-2 border-wait-green flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-wait-green check-pop" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="board-text text-2xl font-bold text-slate-100 mb-2">Report Submitted</h2>
-        <p className="text-sm text-slate-400 mb-1">
-          <span className="board-text text-amber font-medium">{selectedAirport?.code}</span> — {selectedCheckpoint?.name}
+        <h2 className="text-2xl font-bold text-ink mb-2">Report Submitted</h2>
+        <p className="text-sm text-ink-muted mb-1">
+          <span className="mono text-coral font-semibold">{selectedAirport?.code}</span> — {selectedCheckpoint?.name}
         </p>
-        <p className="text-sm text-slate-500 mb-8">
-          You reported a <span className={`board-text font-medium ${color}`}>{waitMinutes} minute</span> wait.
+        <p className="text-sm text-ink-faint mb-8">
+          You reported a <span className={`mono font-semibold ${color}`}>{waitMinutes} minute</span> wait.
         </p>
-        <p className="text-xs text-slate-500 mb-6">Thanks for helping fellow travelers!</p>
+        <p className="text-xs text-ink-faint mb-6">Thanks for helping fellow travelers!</p>
         <div className="flex items-center justify-center gap-3">
           <Link
             to={`/airport/${selectedAirport?.code.toLowerCase()}`}
-            className="px-4 py-2 rounded-lg bg-terminal-card border border-terminal-border text-sm text-slate-300 hover:bg-terminal-card-hover transition-colors"
+            className="px-4 py-2 rounded-full bg-surface border border-border text-sm text-ink hover:bg-surface-hover transition-colors shadow-sm"
           >
             View {selectedAirport?.code}
           </Link>
@@ -74,7 +74,7 @@ export default function Report() {
               setSelectedCheckpoint(null);
               setWaitMinutes(15);
             }}
-            className="px-4 py-2 rounded-lg bg-amber/10 text-amber text-sm hover:bg-amber/20 transition-colors board-text"
+            className="px-4 py-2 rounded-full bg-coral-light text-coral text-sm font-medium hover:bg-coral/20 transition-colors"
           >
             Report Another
           </button>
@@ -89,10 +89,10 @@ export default function Report() {
       <div className="flex items-center gap-2 mb-8">
         {['airport', 'checkpoint', 'time'].map((s, i) => (
           <div key={s} className="flex items-center gap-2 flex-1">
-            <div className={`h-1 flex-1 rounded-full transition-colors ${
+            <div className={`h-1.5 flex-1 rounded-full transition-colors ${
               ['airport', 'checkpoint', 'time'].indexOf(step) >= i
-                ? 'bg-amber'
-                : 'bg-terminal-border'
+                ? 'bg-coral'
+                : 'bg-border-light'
             }`} />
           </div>
         ))}
@@ -101,8 +101,8 @@ export default function Report() {
       {/* Step: Airport */}
       {step === 'airport' && (
         <div className="animate-fade-in">
-          <h2 className="board-text text-xl font-bold text-slate-100 mb-1">Which airport?</h2>
-          <p className="text-sm text-slate-500 mb-5">Select the airport you just went through security at.</p>
+          <h2 className="text-xl font-bold text-ink mb-1">Which airport?</h2>
+          <p className="text-sm text-ink-muted mb-5">Select the airport you just went through security at.</p>
 
           <input
             type="text"
@@ -110,7 +110,7 @@ export default function Report() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             autoFocus
-            className="w-full bg-terminal-card border border-terminal-border rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber/40 mb-4"
+            className="w-full bg-surface border border-border-light rounded-xl px-4 py-3 text-sm text-ink placeholder-ink-faint focus:outline-none focus:border-coral/40 focus:ring-2 focus:ring-coral/10 mb-4 shadow-sm"
           />
 
           <div className="space-y-1.5 max-h-[50vh] overflow-y-auto">
@@ -118,12 +118,12 @@ export default function Report() {
               <button
                 key={airport.id}
                 onClick={() => { setSelectedAirport(airport); setStep('checkpoint'); }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-terminal-card border border-terminal-border hover:border-terminal-border-light hover:bg-terminal-card-hover transition-colors text-left"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-surface border border-border-light hover:border-border hover:bg-surface-hover transition-colors text-left shadow-sm"
               >
-                <span className="board-text text-sm font-bold text-amber w-10">{airport.code}</span>
+                <span className="mono text-sm font-bold text-coral w-10">{airport.code}</span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-slate-200 truncate">{airport.name}</p>
-                  <p className="text-xs text-slate-500">{airport.city}, {airport.state}</p>
+                  <p className="text-sm text-ink truncate">{airport.name}</p>
+                  <p className="text-xs text-ink-muted">{airport.city}, {airport.state}</p>
                 </div>
               </button>
             ))}
@@ -134,30 +134,33 @@ export default function Report() {
       {/* Step: Checkpoint */}
       {step === 'checkpoint' && selectedAirport && (
         <div className="animate-fade-in">
-          <button onClick={() => setStep('airport')} className="text-xs text-slate-500 hover:text-slate-300 mb-4 inline-block">
-            ← Change airport
+          <button onClick={() => setStep('airport')} className="text-xs text-ink-muted hover:text-ink mb-4 inline-flex items-center gap-1">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Change airport
           </button>
-          <h2 className="board-text text-xl font-bold text-slate-100 mb-1">
-            Which checkpoint at <span className="text-amber">{selectedAirport.code}</span>?
+          <h2 className="text-xl font-bold text-ink mb-1">
+            Which checkpoint at <span className="text-coral">{selectedAirport.code}</span>?
           </h2>
-          <p className="text-sm text-slate-500 mb-5">Pick the security checkpoint you used.</p>
+          <p className="text-sm text-ink-muted mb-5">Pick the security checkpoint you used.</p>
 
           <div className="space-y-2">
             {selectedAirport.checkpoints.map(cp => (
               <button
                 key={cp.id}
                 onClick={() => { setSelectedCheckpoint(cp); setStep('time'); }}
-                className="w-full flex items-center gap-3 px-4 py-3.5 rounded-lg bg-terminal-card border border-terminal-border hover:border-terminal-border-light hover:bg-terminal-card-hover transition-colors text-left"
+                className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl bg-surface border border-border-light hover:border-border hover:bg-surface-hover transition-colors text-left shadow-sm"
               >
                 <div className="flex-1">
-                  <p className="text-sm text-slate-200">{cp.name}</p>
+                  <p className="text-sm font-medium text-ink">{cp.name}</p>
                 </div>
                 {cp.isPrecheck && (
-                  <span className="px-2 py-0.5 text-[10px] rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 board-text">
-                    PRE✓
+                  <span className="px-2 py-0.5 text-[10px] rounded-md bg-sky-light text-sky mono font-medium">
+                    PRE{'\u2713'}
                   </span>
                 )}
-                <svg className="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-4 h-4 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </button>
@@ -169,20 +172,23 @@ export default function Report() {
       {/* Step: Wait Time */}
       {step === 'time' && selectedAirport && selectedCheckpoint && (
         <div className="animate-fade-in">
-          <button onClick={() => setStep('checkpoint')} className="text-xs text-slate-500 hover:text-slate-300 mb-4 inline-block">
-            ← Change checkpoint
+          <button onClick={() => setStep('checkpoint')} className="text-xs text-ink-muted hover:text-ink mb-4 inline-flex items-center gap-1">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Change checkpoint
           </button>
-          <h2 className="board-text text-xl font-bold text-slate-100 mb-1">How long did you wait?</h2>
-          <p className="text-sm text-slate-500 mb-2">
-            <span className="board-text text-amber">{selectedAirport.code}</span> — {selectedCheckpoint.name}
+          <h2 className="text-xl font-bold text-ink mb-1">How long did you wait?</h2>
+          <p className="text-sm text-ink-muted mb-2">
+            <span className="mono text-coral font-semibold">{selectedAirport.code}</span> — {selectedCheckpoint.name}
           </p>
 
-          {/* Big number display */}
+          {/* Big number */}
           <div className="flex flex-col items-center py-10">
-            <div className={`board-text text-7xl font-bold ${color} transition-colors`}>
+            <div className={`mono text-7xl font-bold ${color} transition-colors`}>
               {waitMinutes}
             </div>
-            <span className="text-sm text-slate-500 mt-1">minutes</span>
+            <span className="text-sm text-ink-muted mt-1">minutes</span>
           </div>
 
           {/* Slider */}
@@ -196,7 +202,7 @@ export default function Report() {
               onChange={e => setWaitMinutes(parseInt(e.target.value))}
               className="w-full"
             />
-            <div className="flex justify-between mt-2 text-[10px] text-slate-600 board-text">
+            <div className="flex justify-between mt-2 text-[10px] text-ink-faint mono">
               <span>0 min</span>
               <span>30 min</span>
               <span>60 min</span>
@@ -205,16 +211,16 @@ export default function Report() {
             </div>
           </div>
 
-          {/* Quick select buttons */}
+          {/* Quick select */}
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
             {[5, 10, 15, 20, 30, 45, 60].map(m => (
               <button
                 key={m}
                 onClick={() => setWaitMinutes(m)}
-                className={`px-3 py-1.5 rounded-lg text-xs board-text transition-colors ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   waitMinutes === m
-                    ? 'bg-amber/20 text-amber border border-amber/30'
-                    : 'bg-terminal-card border border-terminal-border text-slate-400 hover:text-slate-200 hover:border-terminal-border-light'
+                    ? 'bg-coral text-white shadow-sm'
+                    : 'bg-surface border border-border-light text-ink-muted hover:text-ink hover:border-border'
                 }`}
               >
                 {m}m
@@ -222,16 +228,14 @@ export default function Report() {
             ))}
           </div>
 
-          {/* Error */}
           {error && (
             <p className="text-xs text-wait-red text-center mb-3">{error}</p>
           )}
 
-          {/* Submit */}
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full py-3.5 rounded-xl bg-amber text-terminal-bg font-semibold text-sm hover:bg-amber/90 transition-colors board-text disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3.5 rounded-full bg-coral text-white font-semibold text-sm hover:bg-coral-dark transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? 'Submitting...' : 'Submit Report'}
           </button>

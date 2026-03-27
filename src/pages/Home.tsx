@@ -17,7 +17,6 @@ export default function Home() {
 
   const totalReports = summaries.reduce((sum, a) => sum + a.reportCount, 0);
 
-  // Filter
   const filteredCodes = filterQuery
     ? new Set(searchAirports(filterQuery).map(a => a.code))
     : null;
@@ -26,7 +25,6 @@ export default function Home() {
     ? summaries.filter(s => filteredCodes.has(s.code))
     : summaries;
 
-  // Sort
   const sorted = useMemo(() => {
     const arr = [...filtered];
     switch (sortMode) {
@@ -43,30 +41,32 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero section */}
-      <div className="mb-8">
+      {/* Hero */}
+      <div className="mb-10">
         <div className="flex flex-col items-center text-center mb-6">
-          <h1 className="board-text text-2xl sm:text-3xl font-bold text-slate-100 mb-2">
-            How long is TSA<span className="text-amber">?</span>
+          <h1 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight mb-2">
+            How long is TSA<span className="text-coral">?</span>
           </h1>
-          <p className="text-sm text-slate-400 max-w-md">
+          <p className="text-sm text-ink-muted max-w-md leading-relaxed">
             Real-time security wait times reported by travelers. Check before you fly, report after you clear.
           </p>
         </div>
 
-        <div className="max-w-xl mx-auto mb-4">
+        <div className="max-w-xl mx-auto mb-5">
           <SearchBar large />
         </div>
 
-        {/* Stats bar */}
-        <div className="flex items-center justify-center gap-6 text-xs text-slate-500">
+        {/* Stats ticker */}
+        <div className="flex items-center justify-center gap-6 text-xs text-ink-muted">
           <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-wait-green live-pulse" />
-            <span className="board-text">{totalReports}</span> reports today
+            <span className="w-1.5 h-1.5 rounded-full bg-wait-green live-dot" />
+            <span className="mono font-medium">{totalReports}</span> reports today
           </span>
+          <span className="hidden sm:inline text-border">|</span>
           <span>
-            <span className="board-text">{summaries.length}</span> airports
+            <span className="mono font-medium">{summaries.length}</span> airports
           </span>
+          <span className="hidden sm:inline text-border">|</span>
           <span className="hidden sm:inline">
             Updated in real-time
           </span>
@@ -75,30 +75,29 @@ export default function Home() {
 
       {loading ? (
         <div className="text-center py-20">
-          <div className="inline-block w-6 h-6 border-2 border-amber/30 border-t-amber rounded-full animate-spin" />
-          <p className="text-sm text-slate-500 mt-3">Loading airports...</p>
+          <div className="inline-block w-6 h-6 border-2 border-coral/30 border-t-coral rounded-full animate-spin" />
+          <p className="text-sm text-ink-muted mt-3">Loading airports...</p>
         </div>
       ) : (
-        /* Main grid + sidebar */
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Airport grid */}
           <div className="lg:col-span-2">
-            {/* Sort controls */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
+            {/* Controls bar */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3">
                 <input
                   type="text"
                   placeholder="Filter..."
                   value={filterQuery}
                   onChange={e => setFilterQuery(e.target.value)}
-                  className="bg-terminal-card border border-terminal-border rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber/30 w-32 sm:w-40"
+                  className="bg-surface border border-border-light rounded-lg px-3 py-1.5 text-xs text-ink placeholder-ink-faint focus:outline-none focus:border-coral/30 w-28 sm:w-36 shadow-sm"
                 />
-                <span className="text-xs text-slate-500 board-text">
+                <span className="text-xs text-ink-faint mono">
                   {sorted.length} airport{sorted.length !== 1 ? 's' : ''}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 bg-surface border border-border-light rounded-lg p-0.5 shadow-sm">
                 {[
                   { key: 'wait-desc' as SortMode, label: 'Longest' },
                   { key: 'wait-asc' as SortMode, label: 'Shortest' },
@@ -108,10 +107,10 @@ export default function Home() {
                   <button
                     key={opt.key}
                     onClick={() => setSortMode(opt.key)}
-                    className={`px-2 py-1 rounded text-[11px] transition-colors ${
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors ${
                       sortMode === opt.key
-                        ? 'bg-terminal-card-hover text-slate-200 border border-terminal-border-light'
-                        : 'text-slate-500 hover:text-slate-300'
+                        ? 'bg-coral text-white shadow-sm'
+                        : 'text-ink-muted hover:text-ink'
                     }`}
                   >
                     {opt.label}
@@ -120,7 +119,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Airport cards grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {sorted.map((airport, i) => (
                 <AirportCard key={airport.code} airport={airport} index={i} />
@@ -129,32 +127,24 @@ export default function Home() {
 
             {sorted.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-slate-500 text-sm">No airports match your search.</p>
+                <p className="text-ink-muted text-sm">No airports match your search.</p>
               </div>
             )}
           </div>
 
-          {/* Sidebar — live feed */}
+          {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20">
-              <LiveFeed reports={liveReports} />
+            <div className="sticky top-20 space-y-6">
+              <div className="bg-surface border border-border-light rounded-2xl p-4 shadow-sm">
+                <LiveFeed reports={liveReports} />
+              </div>
 
-              {/* Quick stats */}
-              <div className="mt-6 p-4 rounded-xl bg-terminal-card border border-terminal-border">
-                <h3 className="text-xs text-slate-500 mb-3 uppercase tracking-wider">Right Now</h3>
-                <div className="space-y-3">
-                  <QuickStat
-                    label="Longest wait"
-                    airport={sorted[0]}
-                  />
-                  <QuickStat
-                    label="Shortest wait"
-                    airport={[...sorted].sort((a, b) => a.avgWait - b.avgWait)[0]}
-                  />
-                  <QuickStat
-                    label="Most reports"
-                    airport={[...sorted].sort((a, b) => b.reportCount - a.reportCount)[0]}
-                  />
+              <div className="bg-surface border border-border-light rounded-2xl p-5 shadow-sm">
+                <h3 className="text-xs text-ink-faint mb-4 mono uppercase tracking-wider">Right Now</h3>
+                <div className="space-y-4">
+                  <QuickStat label="Longest wait" airport={sorted[0]} />
+                  <QuickStat label="Shortest wait" airport={[...sorted].sort((a, b) => a.avgWait - b.avgWait)[0]} />
+                  <QuickStat label="Most reports" airport={[...sorted].sort((a, b) => b.reportCount - a.reportCount)[0]} />
                 </div>
               </div>
             </div>
@@ -171,13 +161,13 @@ function QuickStat({ label, airport }: { label: string; airport?: AirportWaitSum
   return (
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-[11px] text-slate-500">{label}</p>
-        <p className="text-sm text-slate-300">
-          <span className="board-text text-amber font-medium">{airport.code}</span>
-          <span className="text-slate-500 ml-1.5">{airport.city}</span>
+        <p className="text-[11px] text-ink-faint mb-0.5">{label}</p>
+        <p className="text-sm text-ink">
+          <span className="mono text-coral font-semibold">{airport.code}</span>
+          <span className="text-ink-muted ml-1.5">{airport.city}</span>
         </p>
       </div>
-      <span className="board-text text-sm font-bold text-slate-200">{airport.avgWait}m</span>
+      <span className="mono text-sm font-bold text-ink">{airport.avgWait}m</span>
     </div>
   );
 }

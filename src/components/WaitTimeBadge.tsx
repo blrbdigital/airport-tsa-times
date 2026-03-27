@@ -28,16 +28,16 @@ export default function WaitTimeBadge({ minutes, size = 'md', showLabel = true, 
 
   return (
     <div className={`inline-flex flex-col items-center gap-0.5 ${className}`}>
-      <div className={`${bg} border rounded-lg ${sizeClasses[size]} animate-number-pop`}>
-        <span className={`board-text font-bold ${color}`}>
+      <div className={`${bg} border rounded-xl ${sizeClasses[size]}`}>
+        <span className={`mono font-bold ${color}`}>
           {minutes}
         </span>
-        <span className={`${color} opacity-60 ml-1 ${labelSizes[size]} board-text`}>
+        <span className={`${color} opacity-60 ml-1 ${labelSizes[size]} mono`}>
           min
         </span>
       </div>
       {showLabel && (
-        <span className={`${labelSizes[size]} text-slate-500`}>
+        <span className={`${labelSizes[size]} text-ink-muted`}>
           {level === 'low' ? 'Short wait' : level === 'medium' ? 'Moderate' : 'Long wait'}
         </span>
       )}

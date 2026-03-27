@@ -64,7 +64,7 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
   return (
     <div className="relative w-full">
       <div className="relative">
-        <svg className={`absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 ${large ? 'w-5 h-5' : 'w-4 h-4'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-faint ${large ? 'w-5 h-5' : 'w-4 h-4'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
         <input
@@ -75,14 +75,14 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
           onFocus={() => query.length >= 1 && results.length > 0 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className={`w-full bg-terminal-card border border-terminal-border rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber/40 focus:ring-1 focus:ring-amber/20 transition-all ${
-            large ? 'pl-11 pr-4 py-3.5 text-base' : 'pl-10 pr-4 py-2.5 text-sm'
+          className={`w-full bg-surface border border-border rounded-xl text-ink placeholder-ink-faint focus:outline-none focus:border-coral/40 focus:ring-2 focus:ring-coral/10 transition-all shadow-sm ${
+            large ? 'pl-12 pr-4 py-3.5 text-base' : 'pl-10 pr-4 py-2.5 text-sm'
           }`}
         />
         {query && (
           <button
             onClick={() => { setQuery(''); setIsOpen(false); }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink-muted transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -91,28 +91,27 @@ export default function SearchBar({ large = false, placeholder = 'Search airport
         )}
       </div>
 
-      {/* Dropdown results */}
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 w-full mt-2 bg-terminal-card border border-terminal-border rounded-xl shadow-2xl overflow-hidden animate-fade-in"
+          className="absolute z-50 w-full mt-2 bg-surface border border-border rounded-xl shadow-lg overflow-hidden animate-fade-in"
         >
           {results.map((airport, i) => (
             <button
               key={airport.id}
               onClick={() => handleSelect(airport)}
               className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${
-                i === selectedIndex ? 'bg-terminal-card-hover' : 'hover:bg-terminal-card-hover'
-              } ${i < results.length - 1 ? 'border-b border-terminal-border' : ''}`}
+                i === selectedIndex ? 'bg-cream-dark' : 'hover:bg-surface-hover'
+              } ${i < results.length - 1 ? 'border-b border-border-light' : ''}`}
             >
-              <span className="board-text text-sm font-bold text-amber w-10 flex-shrink-0">
+              <span className="mono text-sm font-bold text-coral w-10 flex-shrink-0">
                 {airport.code}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-slate-200 truncate">{airport.name}</p>
-                <p className="text-xs text-slate-500">{airport.city}, {airport.state}</p>
+                <p className="text-sm text-ink truncate">{airport.name}</p>
+                <p className="text-xs text-ink-muted">{airport.city}, {airport.state}</p>
               </div>
-              <svg className="w-4 h-4 text-slate-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 text-ink-faint flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
