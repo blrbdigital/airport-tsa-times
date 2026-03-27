@@ -18,61 +18,110 @@ export default function AirportCard({ airport, index }: AirportCardProps) {
     high: 'bg-wait-red',
   }[level];
 
+  const bgAccent = {
+    low: 'bg-wait-green-bg',
+    medium: 'bg-wait-amber-bg',
+    high: 'bg-wait-red-bg',
+  }[level];
+
   return (
     <Link
       to={`/airport/${airport.code.toLowerCase()}`}
-      className="block bg-surface rounded-2xl p-4 sm:p-5 hover-lift border border-border-light active:bg-surface-hover animate-slide-up shadow-sm tap-target"
-      style={{ animationDelay: `${Math.min(index * 30, 300)}ms`, animationFillMode: 'backwards' }}
+      className="block bg-surface rounded-xl border border-border-light active:bg-surface-hover transition-colors shadow-sm animate-slide-up"
+      style={{ animationDelay: `${Math.min(index * 25, 250)}ms`, animationFillMode: 'backwards' }}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="mono text-lg sm:text-xl font-bold text-ink tracking-tight">
-              {airport.code}
-            </span>
+      {/* Mobile: clean single row */}
+      <div className="sm:hidden">
+        <div className="flex items-center px-4 py-3.5 gap-3">
+          {/* Code + city */}
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <span className="mono text-base font-bold text-ink w-10 flex-shrink-0">{airport.code}</span>
             {hasData && (
-              <span className={`w-2 h-2 rounded-full ${dotColor} ${level === 'high' ? 'live-dot' : ''}`} />
+              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor} ${level === 'high' ? 'live-dot' : ''}`} />
             )}
+            <span className="text-sm text-ink-muted truncate">{airport.city}</span>
           </div>
-          <span className="text-sm text-ink-muted truncate hidden sm:inline">
-            {airport.city}
-          </span>
-          <span className="text-xs text-ink-muted truncate sm:hidden">
-            {airport.city}
-          </span>
+
+          {/* Wait time badge */}
+          {hasData ? (
+            <div className={`flex items-center gap-1 px-2.5 py-1 rounded-lg ${bgAccent} flex-shrink-0`}>
+              <span className={`mono text-lg font-bold ${color}`}>{airport.avgWait}</span>
+              <span className={`mono text-[11px] ${color} opacity-70`}>min</span>
+            </div>
+          ) : (
+            <span className="text-sm text-ink-faint mono px-2.5">--</span>
+          )}
+
+          {/* Chevron */}
+          <svg className="w-4 h-4 text-ink-faint flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </div>
 
-        {hasData ? (
-          <div className={`mono text-2xl font-bold ${color} flex-shrink-0 ml-3`}>
-            {airport.avgWait}
-            <span className="text-sm opacity-60 ml-0.5">m</span>
+        {/* Subtle bottom info */}
+        {hasData && (
+          <div className="flex items-center gap-3 px-4 pb-2.5 -mt-1 text-[10px] text-ink-faint">
+            <span>{airport.reportCount} report{airport.reportCount !== 1 ? 's' : ''}</span>
+            {airport.lastReport && <span>{formatTimeAgo(airport.lastReport)}</span>}
+            {airport.checkpoints.length > 1 && (
+              <span className="ml-auto flex gap-2">
+                {airport.checkpoints.slice(0, 2).map(cp => {
+                  const cpColor = getWaitColor(getWaitLevel(cp.avgWait));
+                  return (
+                    <span key={cp.id}>
+                      {cp.isPrecheck ? 'Pre' : cp.terminal} <span className={`mono font-medium ${cpColor}`}>{cp.avgWait}m</span>
+                    </span>
+                  );
+                })}
+              </span>
+            )}
           </div>
-        ) : (
-          <span className="text-sm text-ink-faint mono flex-shrink-0 ml-3">--</span>
         )}
       </div>
 
-      {/* Bottom row — compact */}
-      <div className="flex items-center justify-between mt-2 text-[11px] text-ink-muted">
-        <span>{airport.reportCount} report{airport.reportCount !== 1 ? 's' : ''}</span>
-        <div className="flex items-center gap-2">
-          {hasData && airport.checkpoints.length > 1 && (
-            <div className="flex gap-2">
-              {airport.checkpoints.slice(0, 2).map(cp => {
-                const cpColor = getWaitColor(getWaitLevel(cp.avgWait));
-                return (
-                  <span key={cp.id} className="flex items-center gap-1">
-                    <span className="text-ink-faint">{cp.isPrecheck ? 'Pre' : cp.terminal}</span>
-                    <span className={`mono font-medium ${cpColor}`}>{cp.avgWait}m</span>
-                  </span>
-                );
-              })}
+      {/* Desktop: richer card */}
+      <div className="hidden sm:block p-5">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="mono text-xl font-bold text-ink tracking-tight">{airport.code}</span>
+              {hasData && (
+                <span className={`w-2 h-2 rounded-full ${dotColor} ${level === 'high' ? 'live-dot' : ''}`} />
+              )}
             </div>
+            <p className="text-sm text-ink-muted truncate mt-0.5">{airport.city}, {airport.state}</p>
+          </div>
+
+          {hasData ? (
+            <div className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${bgAccent} flex-shrink-0`}>
+              <span className={`mono text-2xl font-bold ${color}`}>{airport.avgWait}</span>
+              <span className={`mono text-xs ${color} opacity-70`}>min</span>
+            </div>
+          ) : (
+            <span className="text-sm text-ink-faint mono">--</span>
           )}
+        </div>
+
+        <div className="flex items-center justify-between text-[11px] text-ink-muted">
+          <span>{airport.reportCount} report{airport.reportCount !== 1 ? 's' : ''}</span>
           {airport.lastReport && (
             <span className="text-ink-faint">{formatTimeAgo(airport.lastReport)}</span>
           )}
         </div>
+
+        {hasData && airport.checkpoints.length > 1 && (
+          <div className="mt-3 pt-3 border-t border-border-light flex gap-3">
+            {airport.checkpoints.slice(0, 3).map(cp => {
+              const cpColor = getWaitColor(getWaitLevel(cp.avgWait));
+              return (
+                <div key={cp.id} className="text-xs">
+                  <span className="text-ink-faint">{cp.isPrecheck ? 'Pre\u2713' : cp.terminal}</span>
+                  <span className={`ml-1.5 mono font-medium ${cpColor}`}>{cp.avgWait}m</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Link>
   );

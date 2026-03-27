@@ -178,8 +178,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Airport grid — single col mobile, 2 col tablet+ */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+            {/* Airport list (mobile) / grid (desktop) */}
+            <div className="flex flex-col gap-1.5 sm:grid sm:grid-cols-2 sm:gap-3">
               {sorted.map((airport, i) => (
                 <AirportCard key={airport.code} airport={airport} index={i} />
               ))}
