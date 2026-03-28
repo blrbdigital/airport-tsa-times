@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import SEO, { homeSchema } from '../components/SEO';
 import SearchBar from '../components/SearchBar';
 import AirportCard from '../components/AirportCard';
 import LiveFeed from '../components/LiveFeed';
@@ -80,6 +81,12 @@ export default function Home() {
 
   return (
     <div>
+      <SEO
+        path="/"
+        description={`Live TSA security wait times at ${summaries.length} US airports. ${totalReports} crowdsourced reports from real travelers. Check before you fly.`}
+        schema={homeSchema(summaries.length, totalReports)}
+      />
+
       {/* Hero — tighter on mobile */}
       <div className="mb-6 sm:mb-10">
         <div className="text-center mb-5 sm:mb-6">

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { airports, searchAirports } from '../data/airports';
 import { getWaitLevel, getWaitColor } from '../lib/types';
 import { submitReport } from '../hooks/useWaitTimes';
@@ -85,6 +86,12 @@ export default function Report() {
 
   return (
     <div className="max-w-lg mx-auto">
+      <SEO
+        title="Report TSA Wait Time"
+        description="Help fellow travelers — report your current TSA security checkpoint wait time. It takes 10 seconds."
+        path="/report"
+      />
+
       {/* Progress bar */}
       <div className="flex items-center gap-2 mb-6 sm:mb-8">
         {['airport', 'checkpoint', 'time'].map((s, i) => (

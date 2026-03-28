@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://airporttsatimes.blrbdigital.com/sitemap.xml

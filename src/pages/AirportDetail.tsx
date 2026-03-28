@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import SEO, { airportSchema } from '../components/SEO';
 import { getAirport } from '../data/airports';
 import { useAirportSummaries, useLiveReports, useHourlyData } from '../hooks/useWaitTimes';
 import { getWaitLevel, getWaitColor, formatTimeAgo } from '../lib/types';
@@ -58,6 +59,20 @@ export default function AirportDetail() {
 
   return (
     <div className="animate-fade-in">
+      <SEO
+        title={`${airport.code} TSA Wait Times — ${airport.name}`}
+        description={`Current TSA security wait time at ${airport.name} (${airport.code}): ${summary.avgWait} min average. ${summary.reportCount} reports from ${airport.city}, ${airport.state}.`}
+        path={`/airport/${airport.code.toLowerCase()}`}
+        schema={airportSchema({
+          code: airport.code,
+          name: airport.name,
+          city: airport.city,
+          state: airport.state,
+          avgWait: summary.avgWait,
+          reportCount: summary.reportCount,
+        })}
+      />
+
       <Link to="/" className="text-xs text-ink-muted active:text-ink transition-colors mb-4 sm:mb-5 inline-flex items-center gap-1 py-1">
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
