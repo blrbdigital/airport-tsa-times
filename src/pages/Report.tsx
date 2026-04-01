@@ -4,6 +4,7 @@ import SEO from '../components/SEO';
 import { airports, searchAirports } from '../data/airports';
 import { getWaitLevel, getWaitColor } from '../lib/types';
 import { submitReport } from '../hooks/useWaitTimes';
+import { trackReportSubmitted } from '../lib/analytics';
 import type { Airport, Checkpoint } from '../lib/types';
 
 type Step = 'airport' | 'checkpoint' | 'time' | 'success';
@@ -37,6 +38,7 @@ export default function Report() {
     setError('');
     try {
       await submitReport(selectedAirport.code, selectedCheckpoint.id, waitMinutes);
+      trackReportSubmitted(selectedAirport.code, selectedCheckpoint.name, waitMinutes);
       setStep('success');
     } catch (e: any) {
       setError(e?.message || 'Failed to submit. Try again.');

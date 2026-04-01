@@ -1,252 +1,302 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/</loc>
-    <changefreq>daily</changefreq>
+    <loc>https://airporttsatimes.com/</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/atl</loc>
+    <loc>https://airporttsatimes.com/airport/atl</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/dfw</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/den</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/ord</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/lax</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/jfk</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/sfo</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/sea</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/las</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/mco</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/clt</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/dfw</loc>
+    <loc>https://airporttsatimes.com/airport/ewr</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/phx</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/den</loc>
+    <loc>https://airporttsatimes.com/airport/iah</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/ord</loc>
+    <loc>https://airporttsatimes.com/airport/mia</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://airporttsatimes.com/airport/bos</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/lax</loc>
+    <loc>https://airporttsatimes.com/airport/msp</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/jfk</loc>
+    <loc>https://airporttsatimes.com/airport/fll</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/sfo</loc>
+    <loc>https://airporttsatimes.com/airport/dtw</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/sea</loc>
+    <loc>https://airporttsatimes.com/airport/phl</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/las</loc>
+    <loc>https://airporttsatimes.com/airport/lga</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/mco</loc>
+    <loc>https://airporttsatimes.com/airport/bwi</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/clt</loc>
+    <loc>https://airporttsatimes.com/airport/slc</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/ewr</loc>
+    <loc>https://airporttsatimes.com/airport/dca</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/phx</loc>
+    <loc>https://airporttsatimes.com/airport/san</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/iah</loc>
+    <loc>https://airporttsatimes.com/airport/iad</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/mia</loc>
+    <loc>https://airporttsatimes.com/airport/tpa</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/bos</loc>
+    <loc>https://airporttsatimes.com/airport/aus</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/msp</loc>
+    <loc>https://airporttsatimes.com/airport/hnl</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/fll</loc>
+    <loc>https://airporttsatimes.com/airport/mdw</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/dtw</loc>
+    <loc>https://airporttsatimes.com/airport/bna</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/phl</loc>
+    <loc>https://airporttsatimes.com/airport/dal</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/lga</loc>
+    <loc>https://airporttsatimes.com/airport/stl</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/bwi</loc>
+    <loc>https://airporttsatimes.com/airport/hou</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/slc</loc>
+    <loc>https://airporttsatimes.com/airport/rdu</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/dca</loc>
+    <loc>https://airporttsatimes.com/airport/sjc</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/san</loc>
+    <loc>https://airporttsatimes.com/airport/smf</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/iad</loc>
+    <loc>https://airporttsatimes.com/airport/ind</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/tpa</loc>
+    <loc>https://airporttsatimes.com/airport/mci</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/aus</loc>
+    <loc>https://airporttsatimes.com/airport/cle</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/hnl</loc>
+    <loc>https://airporttsatimes.com/airport/sat</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/mdw</loc>
+    <loc>https://airporttsatimes.com/airport/pit</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/bna</loc>
+    <loc>https://airporttsatimes.com/airport/pdx</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/dal</loc>
+    <loc>https://airporttsatimes.com/airport/msy</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/stl</loc>
+    <loc>https://airporttsatimes.com/airport/rsw</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/hou</loc>
+    <loc>https://airporttsatimes.com/airport/cmh</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/rdu</loc>
+    <loc>https://airporttsatimes.com/airport/sna</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/sjc</loc>
+    <loc>https://airporttsatimes.com/airport/buf</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/smf</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/ind</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/mci</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/cle</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/sat</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/pit</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/pdx</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/msy</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/rsw</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/cmh</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/sna</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/airport/buf</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://airporttsatimes.blrbdigital.com/report</loc>
+    <loc>https://airporttsatimes.com/report</loc>
+    <lastmod>2026-03-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>

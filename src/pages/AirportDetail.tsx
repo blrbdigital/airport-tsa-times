@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import SEO, { airportSchema } from '../components/SEO';
+import SEO, { airportSchemas } from '../components/SEO';
 import { getAirport } from '../data/airports';
 import { useAirportSummaries, useLiveReports, useHourlyData } from '../hooks/useWaitTimes';
 import { getWaitLevel, getWaitColor, formatTimeAgo } from '../lib/types';
+import { trackAirportViewed } from '../lib/analytics';
 import WaitTimeBadge from '../components/WaitTimeBadge';
 import CheckpointList from '../components/CheckpointList';
 import TrendChart from '../components/TrendChart';
@@ -18,6 +19,13 @@ export default function AirportDetail() {
   const { reports: recentReports } = useLiveReports(code?.toUpperCase());
   const [filterCheckpoint, setFilterCheckpoint] = useState<string | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
+
+  // Track airport page view
+  useEffect(() => {
+    if (airport) {
+      trackAirportViewed(airport.code, airport.city);
+    }
+  }, [airport]);
 
   const filteredReports = filterCheckpoint
     ? recentReports.filter(r => r.checkpointName === filterCheckpoint)
@@ -60,14 +68,15 @@ export default function AirportDetail() {
   return (
     <div className="animate-fade-in">
       <SEO
-        title={`${airport.code} TSA Wait Times — ${airport.name}`}
-        description={`Current TSA security wait time at ${airport.name} (${airport.code}): ${summary.avgWait} min average. ${summary.reportCount} reports from ${airport.city}, ${airport.state}.`}
+        title={`${airport.code} TSA Wait Time — ${airport.name} Security Line Wait`}
+        description={`How long is TSA at ${airport.code}? Current average wait: ${summary.avgWait} minutes. Real-time security checkpoint wait times at ${airport.name} in ${airport.city}, ${airport.state} from ${summary.reportCount} traveler reports.`}
         path={`/airport/${airport.code.toLowerCase()}`}
-        schema={airportSchema({
+        schemas={airportSchemas({
           code: airport.code,
           name: airport.name,
           city: airport.city,
           state: airport.state,
+          checkpoints: airport.checkpoints.map(c => c.name),
           avgWait: summary.avgWait,
           reportCount: summary.reportCount,
         })}

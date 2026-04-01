@@ -1,12 +1,13 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import SEO, { homeSchema } from '../components/SEO';
+import SEO, { homeSchemas } from '../components/SEO';
 import SearchBar from '../components/SearchBar';
 import AirportCard from '../components/AirportCard';
 import LiveFeed from '../components/LiveFeed';
 import { useAirportSummaries, useLiveReports } from '../hooks/useWaitTimes';
 import { searchAirports, findNearestAirport } from '../data/airports';
 import { getWaitLevel, getWaitColor } from '../lib/types';
+import { trackNearMeUsed } from '../lib/analytics';
 import type { AirportWaitSummary } from '../lib/types';
 
 type SortMode = 'wait-desc' | 'wait-asc' | 'alpha' | 'reports';
@@ -37,6 +38,7 @@ export default function Home() {
         setNearestCode(airport.code);
         setNearestDist(Math.round(distance));
         setLocating(false);
+        trackNearMeUsed(airport.code, Math.round(distance));
         // Navigate after a brief flash so user sees the result
         setTimeout(() => navigate(`/airport/${airport.code.toLowerCase()}`), 800);
       },
@@ -82,9 +84,10 @@ export default function Home() {
   return (
     <div>
       <SEO
+        title="TSA Wait Times — Live Security Line Times at US Airports"
         path="/"
-        description={`Live TSA security wait times at ${summaries.length} US airports. ${totalReports} crowdsourced reports from real travelers. Check before you fly.`}
-        schema={homeSchema(summaries.length, totalReports)}
+        description={`Check real-time TSA security wait times at ${summaries.length} US airports. ${totalReports} crowdsourced reports from real travelers. See how long the TSA line is before you fly.`}
+        schemas={homeSchemas(summaries.length, totalReports)}
       />
 
       {/* Hero — tighter on mobile */}

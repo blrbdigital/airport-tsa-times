@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-04-01 — GA4 Analytics + Conversion Tracking
+- **GA4 property**: Created under BLRB account, measurement ID `G-YKT8RBQY61`
+- **gtag snippet**: Uncommented and wired up in `index.html`
+- **Analytics module**: New `src/lib/analytics.ts` — typed wrapper around gtag
+- **Conversion events**: `report_submitted` (with airport, checkpoint, wait_minutes), `airport_viewed` (with airport_code, city), `near_me_used` (with nearest_airport, distance_miles)
+- **Tracked in**: Report.tsx (on successful submit), AirportDetail.tsx (on page load), Home.tsx (on geolocation result)
+
+## 2026-03-31 — SEO Optimization: Structured Data, Meta Tags, Keyword Targeting
+- **Structured data overhaul**: Airport pages now use proper `Airport` schema (with `iataCode`), `BreadcrumbList`, and `FAQPage` (4 questions per airport targeting rich snippets)
+- **Homepage schemas**: Added `Organization` and `WebApplication` schemas alongside existing `WebSite` schema
+- **Title tag optimization**: Airport pages now target "TSA Wait Time [CODE]" format; homepage targets "TSA Wait Times — Live Security Line Times"
+- **Meta description rewrite**: All descriptions now include question-format hooks ("How long is TSA at [CODE]?") and live data
+- **Domain migration**: All canonical URLs, sitemap, robots.txt, OG tags now use primary domain `airporttsatimes.com`
+- **Sitemap improvements**: Added `lastmod` dates, increased homepage changefreq to hourly, priority tiers (top 10 airports = 0.9)
+- **Twitter cards**: Upgraded to `summary_large_image` format
+- **Keywords expanded**: Added "TSA wait time today", "how long is TSA", "TSA security checkpoint", "crowdsourced wait times"
+
 ## 2026-03-27 — SEO Foundation + Interactive Features
 - **SEO.tsx**: Dynamic per-page meta tags (title, description, OG, Twitter cards, JSON-LD)
 - **Structured data**: WebSite schema with SearchAction (home), Place/Airport schema (detail pages)
