@@ -21,11 +21,11 @@ interface Flight {
 
 const FLIGHTS: Flight[] = [
   {
-    // Left→right, upper gentle S-curve
-    start: [-0.05, 0.18],
-    cp1: [0.28, 0.04],
-    cp2: [0.68, 0.34],
-    end: [1.05, 0.12],
+    // Right→left, upper gentle S-curve
+    start: [1.05, 0.12],
+    cp1: [0.68, 0.34],
+    cp2: [0.28, 0.04],
+    end: [-0.05, 0.18],
     dur: '34s', delay: '0s', opacity: 0.14, strokeWidth: 1.5, planeScale: 1,
   },
   {
